@@ -1,0 +1,58 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Tienda {
+  id          String    @id @default(cuid())
+  nombre      String
+  ubicacion   String
+  encargado   String
+  nroEquipos  Int       @default(0)
+  equipos     Equipo[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Equipo {
+  id             String         @id @default(cuid())
+  usuario        String
+  area           String
+  modelo         String
+  so             String?
+  procesador     String?
+  ram            String?
+  almacenamiento String?
+  ip             String
+  mesCreacion    DateTime
+  tiendaId       String
+  tienda         Tienda         @relation(fields: [tiendaId], references: [id])
+  mantenimientos Mantenimiento[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model Mantenimiento {
+  id                  String   @id @default(cuid())
+  usuario             String
+  nombreMantenimiento String
+  descripcion         String
+  personal            String
+  area                String
+  modelo              String
+  so                  String?
+  procesador          String?
+  ram                 String?
+  almacenamiento      String?
+  ip                  String
+  fecha               DateTime
+  equipoId            String
+  equipo              Equipo   @relation(fields: [equipoId], references: [id])
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
