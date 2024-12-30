@@ -24,7 +24,7 @@ export async function GET(request: Request) {
     })
 
     const tiendasWithNames = await Promise.all(
-      result.map(async (item) => {
+      result.map(async (item: { tiendaId: string }) => {
         const tienda = await prisma.tienda.findUnique({
           where: { id: item.tiendaId },
           select: { nombre: true },
@@ -49,7 +49,7 @@ export async function GET(request: Request) {
     })
 
     const equiposWithDetails = await Promise.all(
-      result.map(async (item) => {
+      result.map(async (item: { equipoId: string }) => {
         const equipo = await prisma.equipo.findUnique({
           where: { id: item.equipoId },
           select: { usuario: true, area: true, modelo: true },
